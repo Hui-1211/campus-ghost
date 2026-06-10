@@ -370,6 +370,14 @@ function room(place){
         ()=>explore(place)
     );
 
+    if(Math.random()<0.1){
+
+    ghostJumpscare();
+
+    return;
+}
+
+
     addButton(
         "💊 使用醫療包",
         ()=>{
@@ -566,6 +574,56 @@ function bossRoom(){
 
     draw();
 }
+// =========================
+// 完整結局畫面
+// =========================
+
+function ending(type){
+
+    clearButtons();
+
+    img.src =
+    "images/ending.jpg";
+
+    if(type==="true"){
+
+        story.innerHTML=
+        `
+        <h1>🌟 真結局</h1>
+
+        女鬼被成功超渡
+
+        校園恢復和平
+
+        👑 通關成功
+        `;
+    }
+
+    else if(type==="normal"){
+
+        story.innerHTML=
+        `
+        <h1>🙂 普通結局</h1>
+
+        真相仍被埋藏
+        `;
+    }
+
+    else{
+
+        story.innerHTML=
+        `
+        <h1>💀 壞結局</h1>
+
+        你成為下一個怨靈
+        `;
+    }
+
+    addButton(
+        "重新開始",
+        ()=>location.reload()
+    );
+}
 
 // =========================
 // 主畫面
@@ -633,3 +691,74 @@ function main(){
 
 updateUI();
 main();
+
+const bgm =
+document.getElementById("bgm");
+
+document.body.addEventListener(
+    "click",
+    () => {
+        bgm.play();
+    },
+    { once:true }
+);
+updateUI();
+main();
+
+const rain =
+document.getElementById("rain");
+
+for(let i=0;i<150;i++){
+
+    const drop =
+    document.createElement("div");
+
+    drop.className =
+    "drop";
+
+    drop.style.left =
+    Math.random()*100+"vw";
+
+    drop.style.animationDuration =
+    0.3+Math.random()*0.7+"s";
+
+    drop.style.opacity =
+    Math.random();
+
+    rain.appendChild(drop);
+}
+
+const flash =
+document.getElementById("flash");
+
+setInterval(()=>{
+
+    if(Math.random()<0.15){
+
+        flash.style.opacity=".9";
+
+        setTimeout(()=>{
+
+            flash.style.opacity="0";
+
+        },100);
+
+    }
+
+},5000);
+
+function ghostJumpscare(){
+
+    img.src =
+    "images/boss.jpg";
+
+    story.innerHTML =
+    `
+    👻 女鬼突然出現！
+    `;
+
+    player.san -= 20;
+
+    updateUI();
+
+}
