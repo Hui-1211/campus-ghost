@@ -170,3 +170,118 @@ body::before{
         translateX(50px);
     }
 }
+
+.fadeIn{
+    animation:fadeIn 1.5s;
+}
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+        transform:scale(1.05);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+.healEffect{
+
+    animation:heal 0.8s;
+}
+
+@keyframes heal{
+
+    0%{
+        filter:brightness(1);
+    }
+
+    50%{
+        filter:
+        brightness(2)
+        drop-shadow(0 0 30px lime);
+    }
+
+    100%{
+        filter:brightness(1);
+    }
+}
+
+.jumpScare{
+
+    animation:
+    scare 0.4s;
+}
+
+@keyframes scare{
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.2);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+}
+
+.attackShake{
+
+    animation:
+    shake 0.3s;
+}
+
+@keyframes shake{
+
+    0%{
+        transform:
+        translateX(0);
+    }
+
+    25%{
+        transform:
+        translateX(-10px);
+    }
+
+    50%{
+        transform:
+        translateX(10px);
+    }
+
+    75%{
+        transform:
+        translateX(-10px);
+    }
+
+    100%{
+        transform:
+        translateX(0);
+    }
+}
+
+.searchEffect{
+
+    animation:
+    search 0.8s;
+}
+
+@keyframes search{
+
+    0%{
+        filter:blur(0);
+    }
+
+    50%{
+        filter:blur(3px);
+    }
+
+    100%{
+        filter:blur(0);
+    }
+}

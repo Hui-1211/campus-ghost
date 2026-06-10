@@ -247,6 +247,25 @@ function checkGameOver(){
 
 function explore(place){
 
+    img.classList.add(
+    "searchEffect"
+);
+
+setTimeout(()=>{
+
+    img.classList.remove(
+        "searchEffect"
+    );
+
+},800);
+
+    if(Math.random() < 0.1){
+
+    ghostJumpscare();
+
+    return;
+}
+
     let r =
     Math.floor(
         Math.random()*10
@@ -370,45 +389,51 @@ function room(place){
         ()=>explore(place)
     );
 
-    if(Math.random()<0.1){
-
-    ghostJumpscare();
-
-    return;
-}
-
-
     addButton(
-        "💊 使用醫療包",
-        ()=>{
+    "💊 使用醫療包",
+    ()=>{
 
-            let index =
-            inventory.indexOf(
-                "醫療包"
+        let index =
+        inventory.indexOf(
+            "醫療包"
+        );
+
+        if(index !== -1){
+
+            inventory.splice(
+                index,
+                1
             );
 
-            if(index !== -1){
+            player.hp += 30;
 
-                inventory.splice(
-                    index,
-                    1
+            if(
+                player.hp >
+                player.maxHp
+            ){
+                player.hp =
+                player.maxHp;
+            }
+
+            // ❤️ 回血動畫
+            img.classList.add(
+                "healEffect"
+            );
+
+            setTimeout(()=>{
+
+                img.classList.remove(
+                    "healEffect"
                 );
 
-                player.hp += 30;
+            },800);
 
-                if(
-                    player.hp >
-                    player.maxHp
-                ){
-                    player.hp =
-                    player.maxHp;
-                }
+            story.innerHTML =
+            "❤️ 恢復30 HP";
 
-                story.innerHTML =
-                "❤️ 恢復30 HP";
+            updateUI();
+        }
 
-                updateUI();
-            }
             else{
 
                 alert(
@@ -423,6 +448,61 @@ function room(place){
         "🏠 返回主畫面",
         main
     );
+}
+//女鬼//
+
+function ghostJumpscare(){
+
+    img.src =
+    "images/boss.jpg";
+
+    img.classList.add("jumpScare");
+
+    const bgm =
+    document.getElementById("bgm");
+
+    bgm.pause();
+
+    player.san -= 20;
+
+    if(player.san < 0){
+        player.san = 0;
+    }
+
+    updateUI();
+
+    story.innerHTML =
+    `
+    <h2>👻 啊啊啊啊啊！！！</h2>
+
+    女鬼突然衝到你面前！
+
+    <br><br>
+
+    SAN -20
+    `;
+
+    // SAN歸零直接壞結局
+    if(player.san <= 0){
+
+        ending("bad");
+
+        return;
+    }
+
+    setTimeout(()=>{
+
+        img.classList.remove(
+            "jumpScare"
+        );
+
+    },400);
+
+    setTimeout(()=>{
+
+        room("地下室");
+
+    },1500);
 }
 
 // =========================
@@ -574,6 +654,36 @@ function bossRoom(){
 
     draw();
 }
+
+function bossAttack(){
+
+    let damage =
+    Math.floor(Math.random()*15)+5;
+
+    player.hp -= damage;
+
+    // 💥 畫面震動
+    img.classList.add(
+        "attackShake"
+    );
+
+    setTimeout(()=>{
+
+        img.classList.remove(
+            "attackShake"
+        );
+
+    },300);
+
+    story.innerHTML =
+    `
+    👻 校長鬼魂攻擊你！
+
+    HP -${damage}
+    `;
+
+    updateUI();
+}
 // =========================
 // 完整結局畫面
 // =========================
@@ -634,6 +744,13 @@ function main(){
     img.src =
     "images/basement.jpg";
 
+    // 大廳淡入動畫
+    img.classList.remove("fadeIn");
+
+    setTimeout(()=>{
+        img.classList.add("fadeIn");
+    },10);
+
     story.innerHTML =
     `
     <h2>🏫 校園鬼屋探險</h2>
@@ -647,40 +764,13 @@ function main(){
 
     clearButtons();
 
-    addButton(
-        "地下室",
-        ()=>room("地下室")
-    );
-
-    addButton(
-        "圖書館",
-        ()=>room("圖書館")
-    );
-
-    addButton(
-        "實驗室",
-        ()=>room("實驗室")
-    );
-
-    addButton(
-        "禮堂",
-        ()=>room("禮堂")
-    );
-
-    addButton(
-        "👻 校長室",
-        bossRoom
-    );
-
-    addButton(
-        "💾 存檔",
-        saveGame
-    );
-
-    addButton(
-        "📂 讀檔",
-        loadGame
-    );
+    addButton("地下室",()=>room("地下室"));
+    addButton("圖書館",()=>room("圖書館"));
+    addButton("實驗室",()=>room("實驗室"));
+    addButton("禮堂",()=>room("禮堂"));
+    addButton("👻 校長室",bossRoom);
+    addButton("💾 存檔",saveGame);
+    addButton("📂 讀檔",loadGame);
 
     updateUI();
 }
